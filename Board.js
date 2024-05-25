@@ -18,26 +18,53 @@
 // • the elements of A are all distinct.
 
 function solution(A) {
+  // Sort the array of hole positions in ascending order
   A.sort((a, b) => a - b);
+
+  // Initialize the left boundary of the search range to 1
   let left = 1;
+
+  // Initialize the right boundary of the search range to the distance between the furthest apart holes plus one
   let right = A[A.length - 1] - A[0] + 1;
+
+  // Initialize the result to the upper bound of the search range
   let result = right;
+
+  // Perform binary search to find the minimum board length
   while (left <= right) {
+    // Calculate the middle point of the current search range
     let mid = Math.floor((left + right) / 2);
+
+    // The position covered by the first board initially
     let covered = A[0] + mid;
+
+    // Initialize the number of boards used to 1
     let boards = 1;
+
+    // Iterate through each hole
     for (let i = 1; i < A.length; i++) {
+      // If the current hole is not covered by the current board
       if (A[i] > covered) {
+        // Use a new board starting from the current hole
         covered = A[i] + mid;
+        // Increment the board count
         boards++;
       }
     }
+
+    // If the number of boards used is within the limit of 2
     if (boards <= 2) {
+      // Update the result to the current mid value
       result = mid;
+      // Narrow the search range to the left half
       right = mid - 1;
     } else {
+      // Otherwise, narrow the search range to the right half
       left = mid + 1;
     }
   }
+
+  // Return the minimum board length found
   return result;
 }
+

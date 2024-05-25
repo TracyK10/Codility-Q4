@@ -19,16 +19,37 @@
 // • each element of array A is an integer within the range [-1,000,000,000.1,000,000,000].
 
 function solution(A) {
+  // Initialize the even and odd elements based on the first two elements of the array
   let even = A[0];
   let odd = A[1];
+  
+  // Initialize the starting index of the current valid subsequence
   let start = 0;
+  
+  // Initialize the maximum length of a valid subsequence found so far
   let maxLen = 0;
+  
+  // Iterate through the array starting from the third element
   for (let i = 2; i < A.length; ++i) {
+    // Check if the current element breaks the alternating pattern
     if ((i % 2 === 0 && A[i] !== even) || (i % 2 === 1 && A[i] !== odd)) {
+      // Update the maximum length if the current subsequence is the longest so far
       maxLen = Math.max(maxLen, i - start);
+      
+      // Reset the starting index to the previous element
       start = i - 1;
+      
+      // Update the even and odd elements for the new subsequence starting from the current and previous elements
       [even, odd] = [A[i], A[i - 1]];
     }
   }
+  
+  // After the loop, check the length of the final subsequence and update the maximum length if necessary
   return Math.max(maxLen, A.length - start);
 }
+
+// Example usage:
+console.log(solution([3, 4, 3, 4, 3, 4, 3, 4])); // Output: 8
+console.log(solution([1, 2, 3, 4, 5, 6, 7, 8])); // Output: 2
+console.log(solution([1, 1, 1, 1, 1, 1, 1, 1])); // Output: 1
+
